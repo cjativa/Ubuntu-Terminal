@@ -1,3 +1,5 @@
-# react-ts-s6znzd
+# Ubuntu Terminal
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/react-ts-s6znzd)
+A quick-and-easy Ubuntu Terminal in the browser. Built on StackBlitz using React. Done in celebration of the Ubuntu 20.04 release last week! 
+
+See it in action [here](https://react-ts-s6znzd.stackblitz.io/).
