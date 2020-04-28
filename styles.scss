@@ -1,0 +1,125 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu+Mono&display=swap');
+
+$ubuntu_green: #8be331;
+$ubuntu_blue: #739ece;
+$ubuntu_white: #ffffff;
+$ubuntu_font:'Ubuntu Mono', monospace;
+
+body {margin: 0;}
+
+.app {
+  height: 100vh;
+  width: 100vw;
+
+  background: url('https://sourcedigit.com/wp-content/uploads/2020/03/Focal-Fossa_1.png');
+  overflow: hidden;
+}
+
+.ubuntu {
+  height: 300px;
+  width: 600px;
+  padding: 0px;
+  
+  overflow: hidden;
+  border-radius: 10px;
+
+  font-family: $ubuntu_font;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  
+  &__navigation-bar {
+    height: 35px;
+    background-color: #312f30;
+    color: $ubuntu_white;
+    padding: 0px 10px;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  &__body {
+    height: 100%;
+    padding: 3px 5px;
+
+    cursor: default;
+    
+    background: #300a24;
+    color: #d4f9ee;
+    
+  }
+
+  .nb {
+    &__center{
+      justify-self: center;
+      font-weight: 300;
+      cursor: default;
+      user-select: none;
+    }
+
+    &__right {
+      justify-self: end;
+
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) min-content;
+      column-gap: 10px;
+
+      justify-items: center;
+      align-items: center;
+    }
+  }
+
+  .command {
+    &__green {
+      color: $ubuntu_green;
+    }
+    &__white {
+      color: $ubuntu_white;
+    }
+
+    &__blue {
+      color: $ubuntu_blue;
+    }
+  }
+}
+
+.custom {
+  height: 1em;
+}
+
+.close {
+  color: #312f30;
+}
+
+.custom:hover .close {
+    color: #e25728;
+}
+
+.raised {
+  background-color: #403e3f;
+  border: 1px solid #282626;
+  border-radius: 4px;
+  padding: 5px 8px;
+}
+
+.terminal-input {
+  border: none;
+
+  color: $ubuntu_white;
+  background: none;
+
+  font-family: $ubuntu_font;
+  font-size: 16px;
+
+  &:active, &:focus {
+    outline: none;
+  }
+}
+
+.max-square, .min-square, .min {
+  padding: 5px 8px;
+  &:hover {
+    background-color: #403e3f;
+  }
+}
