@@ -4,14 +4,9 @@ import { render } from "react-dom";
 import { NavigationBar } from "./navigationBar";
 import { Body } from "./body";
 
-const config = {
-  name: "chris",
-  computerName: "ubuntus"
-};
-
 /** The Ubuntu Terminal component */
 export const UbuntuTerminal = props => {
-  const { appRef, index, addTerminal, removeTerminal } = props;
+  const { appRef, index, addTerminal, removeTerminal, config, setConfig } = props;
   const ubuntuRef = useRef(null);
   const [maximized, setMaximized] = useState(null);
   const [minimized, setMinimized] = useState(null);
@@ -109,6 +104,7 @@ export const UbuntuTerminal = props => {
         index={index}
         minimize={minimize}
         config={config}
+        setConfig={setConfig}
       />
       <Body config={config} />
     </div>

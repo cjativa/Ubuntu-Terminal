@@ -17,6 +17,7 @@ import { UbuntuTerminal } from "./UbuntuTerminal/ubuntuTerminal";
 const Application = () => {
   const appRef = useRef(null);
   const [terminals, updateTerminals] = useState([]);
+  const [config, setConfig] = useState({});
 
   /** Todo - add terminal functionality */
   const addTerminal = () => {
@@ -52,6 +53,8 @@ const Application = () => {
         appRef={appRef}
         addTerminal={addTerminal}
         removeTerminal={removeTerminal}
+        config={config}
+        setConfig={setConfig}
       />
     </div>
   );
