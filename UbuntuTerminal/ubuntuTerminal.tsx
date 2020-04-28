@@ -6,7 +6,7 @@ import { Body } from "./body";
 
 const config = {
   name: "chris",
-  computerName: "ubuntu"
+  computerName: "ubuntus"
 };
 
 /** The Ubuntu Terminal component */
