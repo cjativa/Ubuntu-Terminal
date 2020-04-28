@@ -44,9 +44,6 @@ export const InitialTerminalContent = props => {
     // Replace the old value for it and update the state
     prompts.splice(currentPromptIndex, 1, updatedCurrentPrompt);
     updatePrompts([...prompts]);
-
-    // Clear the input
-    setInput("");
   };
 
   /** Handles input changes in ther terminal input line */
@@ -60,14 +57,14 @@ export const InitialTerminalContent = props => {
     if (currentPrompt.name === "initial") submitInput();
   };
 
-  useEffect(() => {
-    /** Listens for the enter key being pressed on main keyboard/numpad */
-    const enterKeyListener = event => {
-      if (event.code === "NumpadEnter" || event.code === "Enter") {
-        submitInput();
-      }
-    };
+  /** Listens for the enter key being pressed on main keyboard/numpad */
+  const enterKeyListener = event => {
+    if (event.code === "NumpadEnter" || event.code === "Enter" && input.length > 0) {
+      submitInput();
+    }
+  };
 
+  useEffect(() => {
     // Registers the enter key listener on mount
     window.addEventListener("keydown", enterKeyListener);
 
@@ -78,11 +75,14 @@ export const InitialTerminalContent = props => {
   }, [input]);
 
   useEffect(() => {
+    console.log(prompts);
+    // Clear the input
+    setInput("");
     const { value: name } = prompts.find(prompt => prompt.name === "name");
     const { value: computer } = prompts.find(
       prompt => prompt.name === "computer"
     );
-  
+
     if (name && computer) {
       setConfig({
         name,

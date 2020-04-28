@@ -1,17 +1,24 @@
 import React, { Component, useState, useEffect, useRef } from "react";
+import { generateOutputForCommand } from "./commandHelper";
 
 export const TerminalContent = props => {
   const { config, inputRef } = props;
-  const [enteredInputs, setEnteredInputs] = useState([]);
-  const [terminalInput, setInput] = useState("");
+  const [inputs, setInputs] = useState([]);
+  const [input, setInput] = useState("");
 
   /** Handles input being submitted */
   const submitInput = () => {
-    if (terminalInput === "clear") {
-      setEnteredInputs([]);
+    if (input === "clear") {
+      setInputs([]);
     } else {
-      const inputs = [...enteredInputs, terminalInput];
-      setEnteredInputs(inputs);
+      let output = generateOutputForCommand(input);
+
+      const newInput = {
+        input,
+        output
+      };
+      const newInputs = [...inputs, newInput];
+      setInputs(newInputs);
     }
 
     setInput("");
@@ -38,7 +45,7 @@ export const TerminalContent = props => {
       // Unregisters the enter key listener on unmount
       window.removeEventListener("keydown", enterKeyListener);
     };
-  }, [terminalInput]);
+  }, [input]);
 
   /** Genereates the `user@computer:~$` line seen at the beginning of entered command inputs */
   const generateLine = () => {
@@ -56,11 +63,15 @@ export const TerminalContent = props => {
   return (
     <div>
       {/** Renders the list of previously entered inputs */}
-      {enteredInputs.map((input, index) => {
+      {inputs.map((inputObject, index) => {
+        const { input, output } = inputObject;
         return (
           <div key={index}>
-            {generateLine()}
-            {input}
+            <div style={{ whiteSpace: "pre" }}>
+              {generateLine()}
+              {input}
+              {output && <div>{output}</div>}
+            </div>
           </div>
         );
       })}
@@ -74,7 +85,7 @@ export const TerminalContent = props => {
           autoFocus
           onChange={onInputChange}
           spellCheck={false}
-          value={terminalInput}
+          value={input}
           ref={inputRef}
         />
       </div>
