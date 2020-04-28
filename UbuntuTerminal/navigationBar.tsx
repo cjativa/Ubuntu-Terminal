@@ -25,7 +25,7 @@ export const NavigationBar = props => {
     config
   } = props;
 
-  const { name, computerName } = config;
+  const { name, computer } = config;
 
   return (
     <div className="ubuntu__navigation-bar" onMouseDown={drag}>
@@ -40,7 +40,7 @@ export const NavigationBar = props => {
       </div>
 
       {/** Center of the navigation bar */}
-      <div className="nb__center">{`${name}@${computerName}:~`}</div>
+      <div className="nb__center">{`${name}@${computer}:~`}</div>
 
       {/** Right side of the navigation bar */}
       <div className="nb__right">

@@ -42,10 +42,10 @@ export const TerminalContent = props => {
 
   /** Genereates the `user@computer:~$` line seen at the beginning of entered command inputs */
   const generateLine = () => {
-    const { name, computerName } = config;
+    const { name, computer } = config;
     return (
       <span className="command__green">
-        {`${name}@${computerName}`}
+        {`${name}@${computer}`}
         <span className="command__white">:</span>
         <span className="command__blue">~</span>
         <span className="command__white">$</span>{" "}
