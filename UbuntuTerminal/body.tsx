@@ -13,7 +13,11 @@ export const Body = props => {
         <TerminalContent config={config} inputRef={inputRef} />
       )}
       {!config.name && !config.computer && (
-        <InitialTerminalContent config={config} inputRef={inputRef} />
+        <InitialTerminalContent
+          config={config}
+          inputRef={inputRef}
+          setConfig={setConfig}
+        />
       )}
     </div>
   );

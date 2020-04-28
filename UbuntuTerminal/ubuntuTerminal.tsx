@@ -104,9 +104,8 @@ export const UbuntuTerminal = props => {
         index={index}
         minimize={minimize}
         config={config}
-        setConfig={setConfig}
       />
-      <Body config={config} />
+      <Body config={config} setConfig={setConfig}/>
     </div>
   );
 };

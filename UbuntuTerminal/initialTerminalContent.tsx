@@ -1,17 +1,28 @@
 import React, { Component, useState, useEffect, useRef } from "react";
 
 export const InitialTerminalContent = props => {
-  const { config, inputRef } = props;
+  const { inputRef, setConfig } = props;
   const [enteredInputs, setEnteredInputs] = useState([]);
   const [input, setInput] = useState("");
 
   const [prompts, updatePrompts] = useState([
-    { text: "PRESS ANY KEY TO BEGIN", complete: false, value: null },
-    { text: "Please enter your nickname", complete: false, value: null },
+    {
+      text: "PRESS ANY KEY TO BEGIN",
+      complete: false,
+      value: null,
+      name: "initial"
+    },
+    {
+      text: "Please enter your nickname",
+      complete: false,
+      value: null,
+      name: "name"
+    },
     {
       text: "Please enter your computer nickname",
       complete: false,
-      value: null
+      value: null,
+      name: "computer"
     }
   ]);
 
@@ -32,7 +43,7 @@ export const InitialTerminalContent = props => {
 
     // Replace the old value for it and update the state
     prompts.splice(currentPromptIndex, 1, updatedCurrentPrompt);
-    updatePrompts(prompts);
+    updatePrompts([...prompts]);
 
     // Clear the input
     setInput("");
@@ -40,8 +51,13 @@ export const InitialTerminalContent = props => {
 
   /** Handles input changes in ther terminal input line */
   const onInputChange = event => {
+    // Get the current input and set it
     const value = event.target.value;
     setInput(value);
+
+    // Check the current prompt -- if it was initial, then submit the input immediately
+    const currentPrompt = prompts.find(prompt => prompt.complete == false);
+    if (currentPrompt.name === "initial") submitInput();
   };
 
   useEffect(() => {
@@ -61,11 +77,25 @@ export const InitialTerminalContent = props => {
     };
   }, [input]);
 
+  useEffect(() => {
+    const { value: name } = prompts.find(prompt => prompt.name === "name");
+    const { value: computer } = prompts.find(
+      prompt => prompt.name === "computer"
+    );
+  
+    if (name && computer) {
+      setConfig({
+        name,
+        computer
+      });
+    }
+  }, [prompts]);
+
   /** Genereates the lines for previously entered prompts/input */
   const generatePreviousInputLine = () => {
-    return prompts.map(prompt => {
+    return prompts.map((prompt, index) => {
       if (prompt.complete)
-        return <div>{`${prompt.text}: ${prompt.value}`}</div>;
+        return <div key={index}>{`${prompt.text}: ${prompt.value}`}</div>;
     });
   };
 
