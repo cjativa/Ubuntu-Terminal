@@ -51,11 +51,11 @@ export const TerminalContent = props => {
   const generateLine = () => {
     const { name, computer } = config;
     return (
-      <span className="command__green">
+      <span className="command__green" style={{ marginRight: "5px" }}>
         {`${name}@${computer}`}
         <span className="command__white">:</span>
         <span className="command__blue">~</span>
-        <span className="command__white">$</span>{" "}
+        <span className="command__white">$</span>
       </span>
     );
   };
@@ -77,7 +77,7 @@ export const TerminalContent = props => {
       })}
 
       {/** Renders the command input line  */}
-      <div className="input">
+      <div className="input-container">
         {generateLine()}
         <input
           className="terminal-input"
