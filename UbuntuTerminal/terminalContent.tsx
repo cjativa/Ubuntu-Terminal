@@ -7,7 +7,7 @@ export const TerminalContent = props => {
   const [inputs, setInputs] = useState([]);
   const [input, setInput] = useState("");
 
-  const inputContainerRef = useRef(null);
+  const terminalContainerRef = useRef<HTMLDivElement>(null);
 
   /** Handles input being submitted */
   const submitInput = () => {
@@ -27,6 +27,18 @@ export const TerminalContent = props => {
     setInput("");
   };
 
+  useEffect(() => {
+    const updateScrollToBottom = () => {
+      const terminalContent = terminalContainerRef.current;
+      terminalContent.scrollTo({
+        top: terminalContent.scrollHeight,
+        behavior: "smooth"
+      });
+    };
+
+    updateScrollToBottom();
+  }, [inputs]);
+
   /** Handles input changes in ther terminal input line */
   const onInputChange = event => {
     const value = event.target.value;
@@ -38,13 +50,6 @@ export const TerminalContent = props => {
     const enterKeyListener = event => {
       if (event.code === "NumpadEnter" || event.code === "Enter") {
         submitInput();
-
-        const updateScrollToBottom = () => {
-          const terminalContent = inputContainerRef.current;
-          terminalContent.scrollTop = terminalContent.scrollHeight;
-        };
-
-        updateScrollToBottom();
       }
     };
 
@@ -71,7 +76,10 @@ export const TerminalContent = props => {
   };
 
   return (
-    <div style={{ overflowY: "auto", height: "100%", whiteSpace: "pre-line" }}>
+    <div
+      style={{ overflowY: "auto", height: "100%", whiteSpace: "pre-line" }}
+      ref={terminalContainerRef}
+    >
       {/** Renders the list of previously entered inputs */}
       {inputs.map((inputObject, index) => {
         const { input, output } = inputObject;
@@ -87,7 +95,7 @@ export const TerminalContent = props => {
       })}
 
       {/** Renders the command input line  */}
-      <div className="input-container" ref={inputContainerRef}>
+      <div className="input-container">
         {generateLine()}
         <input
           className="terminal-input"
