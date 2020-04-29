@@ -8,7 +8,7 @@ export const generateOutputForCommand = input => {
       return generateCommandHint(
         `display the available folders and files within a directory. 
         
-You would see something like this after running the command in an actual Ubuntu environment
+Running "${input}" would display something like
 
 myFileOne.text myFileTwo.Text cat.png
       `
@@ -38,7 +38,7 @@ cp myAwesomeFile.txt MyDocuments
       return generateCommandHint(
         `create a new file
 
-You provide the name and file extension of the new file to be created. It is used like this
+You provide the name and file extension of the new file to be created. It's used like this
 
 touch aNewDocument.txt
         `

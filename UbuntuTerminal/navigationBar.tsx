@@ -40,7 +40,9 @@ export const NavigationBar = props => {
       </div>
 
       {/** Center of the navigation bar */}
-      <div className="nb__center">{`${name}@${computer}:~`}</div>
+      <div className="nb__center">
+        <span className="nb__center--cp">{`${name}@${computer}:~`}</span>
+      </div>
 
       {/** Right side of the navigation bar */}
       <div className="nb__right">
