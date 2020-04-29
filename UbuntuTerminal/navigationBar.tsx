@@ -25,7 +25,12 @@ export const NavigationBar = props => {
     config
   } = props;
 
-  const { name, computer } = config;
+  let { name, computer } = config;
+
+  if (!name && !computer) {
+    name = `you`;
+    computer = `ubuntu`;
+  }
 
   return (
     <div className="ubuntu__navigation-bar" onMouseDown={drag}>
