@@ -3,8 +3,11 @@ import { generateOutputForCommand } from "./commandHelper";
 
 export const TerminalContent = props => {
   const { config, inputRef } = props;
+
   const [inputs, setInputs] = useState([]);
   const [input, setInput] = useState("");
+
+  const inputContainerRef = useRef(null);
 
   /** Handles input being submitted */
   const submitInput = () => {
@@ -35,6 +38,13 @@ export const TerminalContent = props => {
     const enterKeyListener = event => {
       if (event.code === "NumpadEnter" || event.code === "Enter") {
         submitInput();
+
+        const updateScrollToBottom = () => {
+          const terminalContent = inputContainerRef.current;
+          terminalContent.scrollTop = terminalContent.scrollHeight;
+        };
+
+        updateScrollToBottom();
       }
     };
 
@@ -61,13 +71,13 @@ export const TerminalContent = props => {
   };
 
   return (
-    <div>
+    <div style={{ overflowY: "auto", height: "100%", whiteSpace: "pre-line" }}>
       {/** Renders the list of previously entered inputs */}
       {inputs.map((inputObject, index) => {
         const { input, output } = inputObject;
         return (
           <div key={index}>
-            <div style={{ whiteSpace: "pre" }}>
+            <div>
               {generateLine()}
               {input}
               {output && <div>{output}</div>}
@@ -77,7 +87,7 @@ export const TerminalContent = props => {
       })}
 
       {/** Renders the command input line  */}
-      <div className="input-container">
+      <div className="input-container" ref={inputContainerRef}>
         {generateLine()}
         <input
           className="terminal-input"
