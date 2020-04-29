@@ -18,7 +18,7 @@ myFileOne.text myFileTwo.Text cat.png
       return generateCommandHint(
         `create a new directory
 
-You use the command along with the name you want to give the directory, like this
+You provide the name for the new directory and use it like this
 
 mkdir MyPictures
         `
@@ -28,9 +28,19 @@ mkdir MyPictures
       return generateCommandHint(
         `copy a file or directory to another location
 
-You would use it like this to copy a file to a new location
+You provide the first parameter[s] as the files/directories to be copied and the last parameter as the destination. It is used like this
 
 cp myAwesomeFile.txt MyDocuments
+        `
+      );
+
+    case `touch`:
+      return generateCommandHint(
+        `create a new file
+
+You provide the name and file extension of the new file to be created. It is used like this
+
+touch aNewDocument.txt
         `
       );
 
