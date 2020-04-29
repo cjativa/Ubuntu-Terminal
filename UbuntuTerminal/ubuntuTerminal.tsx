@@ -36,6 +36,7 @@ export const UbuntuTerminal = props => {
         newX < window.innerWidth - 600 &&
         (newY > 0 && newY < window.innerHeight - 300)
       ) {
+        ubuntuRef.current.style.transition = `transform 0.2s smooth`;
         ubuntuRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
       }
     };
