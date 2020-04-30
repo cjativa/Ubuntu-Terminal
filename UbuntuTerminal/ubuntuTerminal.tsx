@@ -14,16 +14,18 @@ export const UbuntuTerminal = props => {
     config,
     setConfig
   } = props;
+
   const ubuntuRef = useRef(null);
   const [maximized, setMaximized] = useState(null);
   const [minimized, setMinimized] = useState(null);
 
   const [xy, updateXY] = useState([]);
+  const [dimensions, updateDimensions] = useState([]);
 
   /** Performs the drag functionality of the terminal */
   const drag = event => {
     ubuntuRef.current.style.transition = "none";
-    
+
     // Get the current position of the target
     const { target, clientX, clientY } = event;
     const { offsetTop, offsetLeft } = target;
@@ -41,10 +43,11 @@ export const UbuntuTerminal = props => {
       const newY = dragStartTop + clientY - dragStartY;
 
       // Constrain the new drag positions to the window size
+      const [width, height] = dimensions;
       const shouldAllowDrag =
         newX > 0 &&
-        newX < window.innerWidth - 600 &&
-        (newY > 0 && newY < window.innerHeight - 300);
+        newX < window.innerWidth - width &&
+        (newY > 0 && newY < window.innerHeight - height);
 
       if (shouldAllowDrag && !maximized) {
         ubuntuRef.current.style.transition = `transform 0.2s smooth`;
@@ -83,8 +86,11 @@ export const UbuntuTerminal = props => {
 
   /** Resets the maximized terminal to normal seize */
   const resetMaximize = (event?) => {
-    ubuntuRef.current.style.height = `300px`;
-    ubuntuRef.current.style.width = `600px`;
+    const [width, height] = dimensions;
+
+    ubuntuRef.current.style.width = `${width}px`;
+    ubuntuRef.current.style.height = `${height}px`;
+
     ubuntuRef.current.style.transition = `height 0.2s ease-in, width 0.2s ease-in, transform 0.2s ease-in`;
 
     const [x, y] = xy;
@@ -98,7 +104,7 @@ export const UbuntuTerminal = props => {
   /** Minimizes the terminal */
   const minimize = event => {
     ubuntuRef.current.style.transform = `translate(0, 96vh)`;
-    ubuntuRef.current.style.width = `600px`;
+    ubuntuRef.current.style.width = `${dimensions[0]}`;
 
     ubuntuRef.current.style.transition = `transform 0.2s ease-in, width 0.2s ease-in`;
     setMinimized(true);
@@ -110,10 +116,12 @@ export const UbuntuTerminal = props => {
   useEffect(() => {
     if (ubuntuRef.current) {
       const { offsetTop, offsetLeft } = ubuntuRef.current;
+      const { width, height } = ubuntuRef.current.getBoundingClientRect();
 
       appRef.style.display = `block`;
       ubuntuRef.current.style.transform = `translate(${offsetLeft}px, ${offsetTop}px)`;
 
+      updateDimensions([width, height]);
       updateXY([offsetLeft, offsetTop]);
     }
   }, [ubuntuRef]);

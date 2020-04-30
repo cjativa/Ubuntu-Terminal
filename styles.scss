@@ -25,6 +25,11 @@ body {margin: 0;}
   height: 300px;
   width: 600px;
   padding: 0px;
+
+  @media (max-width: 640px) {
+    height: 30%;
+    width: 97%;
+  }
   
   overflow: hidden;
   border-radius: 10px;
