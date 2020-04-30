@@ -23,6 +23,7 @@ export const UbuntuTerminal = props => {
   /** Performs the drag functionality of the terminal */
   const drag = event => {
     ubuntuRef.current.style.transition = "none";
+    
     // Get the current position of the target
     const { target, clientX, clientY } = event;
     const { offsetTop, offsetLeft } = target;
@@ -45,10 +46,10 @@ export const UbuntuTerminal = props => {
         newX < window.innerWidth - 600 &&
         (newY > 0 && newY < window.innerHeight - 300);
 
-      if (shouldAllowDrag) {
+      if (shouldAllowDrag && !maximized) {
         ubuntuRef.current.style.transition = `transform 0.2s smooth`;
         ubuntuRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
-        
+
         const { x, y } = ubuntuRef.current.getBoundingClientRect();
         updateXY([x, y]);
       }
@@ -112,6 +113,8 @@ export const UbuntuTerminal = props => {
 
       appRef.style.display = `block`;
       ubuntuRef.current.style.transform = `translate(${offsetLeft}px, ${offsetTop}px)`;
+
+      updateXY([offsetLeft, offsetTop]);
     }
   }, [ubuntuRef]);
 
