@@ -6,10 +6,19 @@ import { Body } from "./body";
 
 /** The Ubuntu Terminal component */
 export const UbuntuTerminal = props => {
-  const { appRef, index, addTerminal, removeTerminal, config, setConfig } = props;
+  const {
+    appRef,
+    index,
+    addTerminal,
+    removeTerminal,
+    config,
+    setConfig
+  } = props;
   const ubuntuRef = useRef(null);
   const [maximized, setMaximized] = useState(null);
   const [minimized, setMinimized] = useState(null);
+
+  const [xy, updateXY] = useState([]);
 
   /** Performs the drag functionality of the terminal */
   const drag = event => {
@@ -31,13 +40,17 @@ export const UbuntuTerminal = props => {
       const newY = dragStartTop + clientY - dragStartY;
 
       // Constrain the new drag positions to the window size
-      if (
+      const shouldAllowDrag =
         newX > 0 &&
         newX < window.innerWidth - 600 &&
-        (newY > 0 && newY < window.innerHeight - 300)
-      ) {
+        (newY > 0 && newY < window.innerHeight - 300);
+
+      if (shouldAllowDrag) {
         ubuntuRef.current.style.transition = `transform 0.2s smooth`;
         ubuntuRef.current.style.transform = `translate(${newX}px, ${newY}px)`;
+        
+        const { x, y } = ubuntuRef.current.getBoundingClientRect();
+        updateXY([x, y]);
       }
     };
 
@@ -57,7 +70,6 @@ export const UbuntuTerminal = props => {
     if (!minimized) {
       ubuntuRef.current.style.height = `100%`;
       ubuntuRef.current.style.width = `100%`;
-
       ubuntuRef.current.style.transform = `translate(0px, 0px)`;
       ubuntuRef.current.style.transition = `height 0.2s ease-in, width 0.2s ease-in, transform 0.2s ease-in`;
       setMaximized(true);
@@ -73,8 +85,9 @@ export const UbuntuTerminal = props => {
     ubuntuRef.current.style.height = `300px`;
     ubuntuRef.current.style.width = `600px`;
     ubuntuRef.current.style.transition = `height 0.2s ease-in, width 0.2s ease-in, transform 0.2s ease-in`;
-    ubuntuRef.current.style.transform = `translate(0px, 0px)`;
 
+    const [x, y] = xy;
+    ubuntuRef.current.style.transform = `translate(${x}px, ${y}px)`;
     setMaximized(false);
 
     // If the terminal was minimized prior, reset the state of it
@@ -93,6 +106,15 @@ export const UbuntuTerminal = props => {
     if (maximize) setMaximized(false);
   };
 
+  useEffect(() => {
+    if (ubuntuRef.current) {
+      const { offsetTop, offsetLeft } = ubuntuRef.current;
+
+      appRef.style.display = `block`;
+      ubuntuRef.current.style.transform = `translate(${offsetLeft}px, ${offsetTop}px)`;
+    }
+  }, [ubuntuRef]);
+
   return (
     <div className="ubuntu" ref={ubuntuRef}>
       <NavigationBar
@@ -106,7 +128,7 @@ export const UbuntuTerminal = props => {
         minimize={minimize}
         config={config}
       />
-      <Body config={config} setConfig={setConfig}/>
+      <Body config={config} setConfig={setConfig} />
     </div>
   );
 };

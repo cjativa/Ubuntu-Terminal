@@ -1,21 +1,17 @@
-import React, { Component, useState, useEffect, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, {
+  Component,
+  useState,
+  useEffect,
+  useRef,
+  useCallback
+} from "react";
 import { render } from "react-dom";
 import "./styles.scss";
-import { faSquare } from "@fortawesome/free-regular-svg-icons";
-import {
-  faSearch,
-  faBars,
-  faMinus,
-  faTimes,
-  faPlus,
-  faCircle,
-  faCompress
-} from "@fortawesome/free-solid-svg-icons";
 import { UbuntuTerminal } from "./UbuntuTerminal/ubuntuTerminal";
 
 const Application = () => {
-  const appRef = useRef(null);
+  const ubuntuRef = useRef(null);
+  const [appRef, setAppRef] = useState(null);
   const [terminals, updateTerminals] = useState([]);
   const [config, setConfig] = useState({});
 
@@ -33,6 +29,10 @@ const Application = () => {
     updateTerminals(copyTerminals);
   };
 
+  const onRefChange = useCallback(node => {
+    if (node) setAppRef(node);
+  }, []);
+
   const UbuntuTerminalFactory = () => (
     <UbuntuTerminal
       appRef={appRef}
@@ -41,21 +41,18 @@ const Application = () => {
     />
   );
 
-  useEffect(() => {
-    const terminals = [<UbuntuTerminalFactory />];
-    updateTerminals(terminals);
-  }, []);
-
   return (
-    <div className="app" ref={appRef}>
+    <div className="app" ref={onRefChange}>
       {/** Renders an Ubuntu Terminal component */}
-      <UbuntuTerminal
-        appRef={appRef}
-        addTerminal={addTerminal}
-        removeTerminal={removeTerminal}
-        config={config}
-        setConfig={setConfig}
-      />
+      {appRef && appRef.style && (
+        <UbuntuTerminal
+          appRef={appRef}
+          addTerminal={addTerminal}
+          removeTerminal={removeTerminal}
+          config={config}
+          setConfig={setConfig}
+        />
+      )}
     </div>
   );
 };
