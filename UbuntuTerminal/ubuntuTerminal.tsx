@@ -22,12 +22,22 @@ export const UbuntuTerminal = props => {
   const [xy, updateXY] = useState([]);
   const [dimensions, updateDimensions] = useState([]);
 
+  const getClientPoints = event => {
+    const clientX = event.touches[0].clientX;
+    const clientY = event.touches[0].clientY;
+
+    return { clientX, clientY };
+  };
+
   /** Performs the drag functionality of the terminal */
   const drag = event => {
     ubuntuRef.current.style.transition = "none";
 
     // Get the current position of the target
-    const { target, clientX, clientY } = event;
+    let { target, clientX, clientY } = event;
+    if (!clientX && !clientY) {
+      [({ clientX, clientY } = getClientPoints(event))];
+    }
     const { offsetTop, offsetLeft } = target;
     const { left, top } = ubuntuRef.current.getBoundingClientRect();
 
@@ -38,7 +48,12 @@ export const UbuntuTerminal = props => {
     let dragStartY = clientY;
 
     /** Modify position of the element when drag starts */
-    const beginDrag = ({ clientX, clientY }) => {
+    const beginDrag = dragEvent => {
+      let { clientX, clientY } = dragEvent;
+      if (!clientX && !clientY) {
+        [({ clientX, clientY } = getClientPoints(dragEvent))];
+      }
+
       const newX = dragStartLeft + clientX - dragStartX;
       const newY = dragStartTop + clientY - dragStartY;
 
@@ -62,10 +77,16 @@ export const UbuntuTerminal = props => {
     const stopDrag = () => {
       window.removeEventListener("mousemove", beginDrag, false);
       window.removeEventListener("mouseup", stopDrag, false);
+
+      window.removeEventListener("touchmove", beginDrag, false);
+      window.removeEventListener("touchend", stopDrag, false);
     };
 
     window.addEventListener("mousemove", beginDrag, false);
     window.addEventListener("mouseup", stopDrag, false);
+
+    window.addEventListener("touchmove", beginDrag, false);
+    window.addEventListener("touchend", stopDrag, false);
   };
 
   /** Handles maximizing the terminal when not maximied */

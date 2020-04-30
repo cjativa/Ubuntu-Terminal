@@ -33,7 +33,7 @@ export const NavigationBar = props => {
   }
 
   return (
-    <div className="ubuntu__navigation-bar" onMouseDown={drag}>
+    <div className="ubuntu__navigation-bar" onMouseDown={drag} onTouchStart={drag} >
       {/** Left side of the navigation bar */}
       <div className="nb__left">
         <FontAwesomeIcon
