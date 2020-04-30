@@ -59,23 +59,23 @@ export const InitialTerminalContent = props => {
 
   /** Listens for the enter key being pressed on main keyboard/numpad */
   const enterKeyListener = event => {
-    if (event.code === "NumpadEnter" || event.code === "Enter" && input.length > 0) {
+    const code = event.code || event.key;
+    if (code === "NumpadEnter" || (code === "Enter" && input.length > 0)) {
       submitInput();
     }
   };
 
   useEffect(() => {
     // Registers the enter key listener on mount
-    window.addEventListener("keydown", enterKeyListener);
+    window.addEventListener("keypress", enterKeyListener);
 
     return () => {
       // Unregisters the enter key listener on unmount
-      window.removeEventListener("keydown", enterKeyListener);
+      window.removeEventListener("keypress", enterKeyListener);
     };
   }, [input]);
 
   useEffect(() => {
-    console.log(prompts);
     // Clear the input
     setInput("");
     const { value: name } = prompts.find(prompt => prompt.name === "name");

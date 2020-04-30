@@ -48,17 +48,17 @@ export const TerminalContent = props => {
   useEffect(() => {
     /** Listens for the enter key being pressed on main keyboard/numpad */
     const enterKeyListener = event => {
-      if (event.code === "NumpadEnter" || event.code === "Enter") {
+      const code = event.code || event.key;
+      if (code === "NumpadEnter" || code === "Enter") {
         submitInput();
       }
     };
 
     // Registers the enter key listener on mount
-    window.addEventListener("keydown", enterKeyListener);
-
+    window.addEventListener("keypress", enterKeyListener);
     return () => {
       // Unregisters the enter key listener on unmount
-      window.removeEventListener("keydown", enterKeyListener);
+      window.removeEventListener("keypress", enterKeyListener);
     };
   }, [input]);
 
