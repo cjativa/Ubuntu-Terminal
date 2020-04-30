@@ -44,6 +44,33 @@ touch aNewDocument.txt
         `
       );
 
+    case `cd`:
+      return generateCommandHint(
+        `changes the current working directory
+
+You provide the path to the directory you want to navigate to. Additional parameters you can give are
+
+- cd / — takes you to the root directory
+- cd .. — takes you up one directory level
+- cd - — takes you to the previous directory
+- cd home - take you to a sub-directory of your current directory called home (if it exists)
+
+cd home 
+        `
+      );
+
+    case `sudo`:
+      return generateCommandHint(
+        `allows you to run programs or other commands with administrative privileges
+
+You can enter "sudo" by itself and your terminal session will be run with administrative privileges for the whole session.
+
+You can also use "sudo" before the command for a different program like below
+
+sudo ls
+        `
+      );
+
     default:
       return `Oops! I don't know about the "${input}"" command`;
   }
