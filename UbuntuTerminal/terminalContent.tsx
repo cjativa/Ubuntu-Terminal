@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect, useRef } from "react";
-import { generateOutputForCommand } from "./commandHelper";
+import { generateOutputForCommand, showHelpList } from "./commandHelper";
 
 export const TerminalContent = props => {
   const { config, inputRef } = props;
@@ -11,17 +11,26 @@ export const TerminalContent = props => {
 
   /** Handles input being submitted */
   const submitInput = () => {
+    // If the input was to clear, empty our previously entered inputs
     if (input === "clear") {
       setInputs([]);
-    } else if (input === "help") {
-    } else {
-      let output = generateOutputForCommand(input);
+    }
 
-      const newInput = {
+    // Otherwise, handle as a command
+    else {
+      let output;
+
+      // For the help command, display the list of commands
+      if (input === "help") output = showHelpList();
+      // Otherwise, generate the output
+      else output = generateOutputForCommand(input);
+
+      const inputToAdd = {
         input,
         output
       };
-      const newInputs = [...inputs, newInput];
+
+      const newInputs = [...inputs, inputToAdd];
       setInputs(newInputs);
     }
 
@@ -116,6 +125,7 @@ export const TerminalContent = props => {
           spellCheck={false}
           value={input}
           ref={inputRef}
+          placeholder={inputs.length == 0 ? `Enter "help" for a list of commands` : ""}
         />
       </div>
     </div>

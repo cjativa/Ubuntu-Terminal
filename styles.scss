@@ -59,6 +59,7 @@ body {margin: 0;}
     width: 100%;
     height: 100%;
     padding: 3px 5px;
+    box-sizing: border-box;
 
     cursor: default;
     
@@ -124,6 +125,7 @@ body {margin: 0;}
 
 .terminal-input {
   border: none;
+  flex-grow: 1;
 
   color: $ubuntu_white;
   background: none;

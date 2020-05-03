@@ -11,6 +11,14 @@ export const generateOutputForCommand = command => {
   return `Oops! I don't know about the "${command}" command. Enter "help" for the list of supported commands`;
 };
 
+export const showHelpList = () => {
+  const commandList = supportedCommands
+    .map(command => ` - ${command.command}\n`)
+    .join("");
+
+  return `The list of commands that this terminal supports are \n\n ${commandList}`;
+};
+
 const supportedCommands = [
   {
     command: "ls",
