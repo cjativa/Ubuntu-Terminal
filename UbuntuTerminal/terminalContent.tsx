@@ -13,6 +13,7 @@ export const TerminalContent = props => {
   const submitInput = () => {
     if (input === "clear") {
       setInputs([]);
+    } else if (input === "help") {
     } else {
       let output = generateOutputForCommand(input);
 
@@ -27,6 +28,7 @@ export const TerminalContent = props => {
     setInput("");
   };
 
+  /** Scrolls terminal to bottom after input is entered */
   useEffect(() => {
     const updateScrollToBottom = () => {
       const terminalContent = terminalContainerRef.current;
@@ -75,24 +77,33 @@ export const TerminalContent = props => {
     );
   };
 
+  /** Generates the lines of previously entered inputs */
+  const displayPreviousInputs = () => {
+    return (
+      <div>
+        {inputs.map((inputObject, index) => {
+          const { input, output } = inputObject;
+          return (
+            <div key={index}>
+              <div>
+                {generateLine()}
+                {input}
+                {output && <div>{output}</div>}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
     <div
       style={{ overflowY: "auto", height: "100%", whiteSpace: "pre-line" }}
       ref={terminalContainerRef}
     >
-      {/** Renders the list of previously entered inputs */}
-      {inputs.map((inputObject, index) => {
-        const { input, output } = inputObject;
-        return (
-          <div key={index}>
-            <div>
-              {generateLine()}
-              {input}
-              {output && <div>{output}</div>}
-            </div>
-          </div>
-        );
-      })}
+      {/** Renders previously entered inputs */}
+      {displayPreviousInputs()}
 
       {/** Renders the command input line  */}
       <div className="input-container">
